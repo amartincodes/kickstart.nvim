@@ -1054,23 +1054,38 @@ require('lazy').setup({
           side = 'left',
           signcolumn = 'yes',
         },
-        vim.keymap.set('n', '<leader>ee', ':NvimTreeToggle<CR>', { desc = 'open toggle file tree', noremap = true, silent = true }),
-        vim.keymap.set('n', '<leader>ef', function()
-          local api = require 'nvim-tree.api'
-          local curr_buf = vim.api.nvim_get_current_buf()
-          local curr_name = vim.api.nvim_buf_get_name(curr_buf)
-
-          if curr_name:match 'NvimTree_' then
-            vim.cmd 'wincmd p'
-          else
-            if api.tree.is_visible() then
-              api.tree.focus()
-            else
-              api.tree.open()
-            end
-          end
-        end, { desc = 'focus toggle file tree', noremap = true, silent = true }),
       }
+
+      -- Keymaps for nvim-tree
+      vim.keymap.set('n', '<leader>ee', ':NvimTreeToggle<CR>', { desc = 'open toggle file tree', noremap = true, silent = true })
+      vim.keymap.set('n', '<leader>ef', function()
+        local api = require 'nvim-tree.api'
+        local curr_buf = vim.api.nvim_get_current_buf()
+        local curr_name = vim.api.nvim_buf_get_name(curr_buf)
+        if curr_name:match 'NvimTree_' then
+          vim.cmd 'wincmd p'
+        else
+          if api.tree.is_visible() then
+            api.tree.focus()
+          else
+            api.tree.open()
+          end
+        end
+      end, { desc = 'focus toggle file tree', noremap = true, silent = true })
+
+      -- Toggle nvim-tree width between narrow and wide
+      local narrow_width = 30
+      local wide_width = 60
+      local wider_width = 120
+      local is_wide = false
+      vim.keymap.set('n', '<leader>ew', function()
+        is_wide = not is_wide
+        vim.cmd('NvimTreeResize ' .. (is_wide and wide_width or narrow_width))
+      end, { desc = 'toggle nvim-tree width', noremap = true, silent = true })
+      vim.keymap.set('n', '<leader>eW', function()
+        is_wide = not is_wide
+        vim.cmd('NvimTreeResize ' .. (is_wide and wider_width or narrow_width))
+      end, { desc = 'toggle nvim-tree width', noremap = true, silent = true })
     end,
   },
   {
