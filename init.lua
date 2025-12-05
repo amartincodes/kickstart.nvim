@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -224,17 +224,17 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 -- Close nvim-tree automatically if it's the final buffer
-vim.api.nvim_create_autocmd('BufEnter', {
-  nested = true,
-  callback = function()
-    if #vim.api.nvim_list_wins() == 1 then
-      local bufname = vim.api.nvim_buf_get_name(0)
-      if bufname:match 'NvimTree_' then
-        vim.cmd 'quit'
-      end
-    end
-  end,
-})
+-- vim.api.nvim_create_autocmd('BufEnter', {
+--   nested = true,
+--   callback = function()
+--     if #vim.api.nvim_list_wins() == 1 then
+--       local bufname = vim.api.nvim_buf_get_name(0)
+--       if bufname:match 'NvimTree_' then
+--         vim.cmd 'quit'
+--       end
+--     end
+--   end,
+-- })
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
@@ -826,13 +826,13 @@ require('lazy').setup({
         -- python = { "isort", "black" },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        javascript = { 'prettierd', 'prettier', stop_after_first = true },
-        javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
-        typescript = { 'prettierd', 'prettier', stop_after_first = true },
-        typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
+        javascript = { 'biome', 'prettierd', 'prettier', stop_after_first = true },
+        javascriptreact = { 'biome', 'prettierd', 'prettier', stop_after_first = true },
+        typescript = { 'biome', 'prettierd', 'prettier', stop_after_first = true },
+        typescriptreact = { 'biome', 'prettierd', 'prettier', stop_after_first = true },
         json = { 'prettierd', 'prettier', stop_after_first = true },
-        html = { 'prettierd', 'prettier', stop_after_first = true },
-        css = { 'prettierd', 'prettier', stop_after_first = true },
+        html = { 'biome', 'prettierd', 'prettier', stop_after_first = true },
+        css = { 'biome', 'prettierd', 'prettier', stop_after_first = true },
         -- scss = { 'prettierd', 'prettier', stop_after_first = true },
         markdown = { 'prettierd', 'prettier', stop_after_first = true },
         rust = { 'rustfmt', lsp_format = 'fallback' },
@@ -1247,6 +1247,9 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>h9', function()
         harpoon:list():select(9)
       end, { desc = '[H]arpoon [9] Go to File' })
+      vim.keymap.set('n', '<leader>hc', function()
+        harpoon:list():clear()
+      end, { desc = '[H]arpoon [C]lear All Files' })
     end,
   },
 
