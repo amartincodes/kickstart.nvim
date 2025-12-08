@@ -186,13 +186,26 @@ vim.keymap.set('n', '<leader>qb', function()
   vim.diagnostic.open_float(nil, { scope = 'buffer' })
 end, { desc = 'Show diagnostics for buffer' })
 
+-- Lazy plugin manager keymaps
+vim.keymap.set('n', '<leader>pm', '<cmd>Lazy<CR>', { desc = 'Open Lazy [P]lugin [M]anager' })
+
+-- Terminal mode keymaps
+vim.keymap.set('n', '<leader>Tt', '<cmd>vsplit term://bash<CR>', { desc = 'Open [T]erminal' })
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- is not what someone will guess without a bit more experience.
 --
+-- add a message when opening a terminal that you can close with <C-q>
+vim.api.nvim_create_autocmd('TermOpen', {
+  pattern = '*',
+  callback = function()
+    vim.api.nvim_echo({ { 'Press <C-c> to exit terminal mode', 'Normal' } }, false, {})
+  end,
+})
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+vim.keymap.set('t', '<C-c>', [[<C-\><C-n>]], { desc = 'Exit terminal mode' })
 
 -- TIP: Disable arrow keys in normal mode
 -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
@@ -375,6 +388,8 @@ require('lazy').setup({
         { '<leader>e', group = 'File [E]xplorer' },
         { '<leader>l', group = '[L]azy Git' },
         { '<leader>q', group = 'Open diagnostics [Q]uickfix' },
+        { '<leader>p', group = '[P]lugin Manager' },
+        { '<leader>T', group = '[T]erminal' },
       },
     },
   },
