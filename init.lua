@@ -1320,6 +1320,23 @@ require('lazy').setup({
       end, { desc = '[Y]ank [B]ank [U]npin entry', noremap = true })
     end,
   },
+  {
+    'amartincodes/storia',
+    config = function()
+      require('storia').setup {
+        max_files = 10,
+      }
+
+      -- Optional: Set up a keybinding
+      vim.keymap.set('n', '<leader>bs', function()
+        require('storia').toggle()
+      end, { desc = '[S]toria: Show recent files' })
+      vim.keymap.set('n', '<leader>bc', function()
+        require('storia').clear()
+        print 'Storia: Cleared history'
+      end, { desc = 'Storia: [C]lear working history' })
+    end,
+  },
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
