@@ -242,19 +242,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
--- Close nvim-tree automatically if it's the final buffer
-vim.api.nvim_create_autocmd('BufEnter', {
-  nested = true,
-  callback = function()
-    if #vim.api.nvim_list_wins() == 1 then
-      local bufname = vim.api.nvim_buf_get_name(0)
-      if bufname:match 'NvimTree_' then
-        vim.cmd 'quit'
-      end
-    end
-  end,
-})
-
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -1060,43 +1047,6 @@ require('lazy').setup({
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   },
   {
-    'nvim-tree/nvim-tree.lua',
-    version = '*',
-    lazy = false,
-    dependencies = {
-      'nvim-tree/nvim-web-devicons',
-    },
-    config = function()
-      require('nvim-tree').setup {
-        filters = {
-          dotfiles = false,
-          git_ignored = false,
-        },
-        view = {
-          width = 30,
-          side = 'left',
-          signcolumn = 'yes',
-        },
-        vim.keymap.set('n', '<leader>ee', ':NvimTreeToggle<CR>', { desc = 'open toggle file tree', noremap = true, silent = true }),
-        vim.keymap.set('n', '<leader>ef', function()
-          local api = require 'nvim-tree.api'
-          local curr_buf = vim.api.nvim_get_current_buf()
-          local curr_name = vim.api.nvim_buf_get_name(curr_buf)
-
-          if curr_name:match 'NvimTree_' then
-            vim.cmd 'wincmd p'
-          else
-            if api.tree.is_visible() then
-              api.tree.focus()
-            else
-              api.tree.open()
-            end
-          end
-        end, { desc = 'focus toggle file tree', noremap = true, silent = true }),
-      }
-    end,
-  },
-  {
     'kdheepak/lazygit.nvim',
     lazy = true,
     cmd = {
@@ -1351,7 +1301,7 @@ require('lazy').setup({
   require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
