@@ -73,6 +73,7 @@ return {
         position = 'left',
         mappings = {
           ['\\'] = 'close_window',
+          ['<cr>'] = 'open_with_window_picker',
         },
       },
       window_picker = {
