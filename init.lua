@@ -378,6 +378,7 @@ require('lazy').setup({
         { '<leader>p', group = '[P]lugin Manager' },
         { '<leader>T', group = '[T]erminal' },
         { '<leader>b', group = '[B]ank (histories)' },
+        { '<leader>m', group = '[M]arkdown' },
       },
     },
   },
