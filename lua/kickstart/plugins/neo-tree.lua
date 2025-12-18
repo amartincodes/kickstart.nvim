@@ -74,6 +74,8 @@ return {
         mappings = {
           ['\\'] = 'close_window',
           ['<cr>'] = 'open_with_window_picker',
+          ['/'] = 'none',
+          ['F'] = 'fuzzy_finder',
         },
       },
       window_picker = {
