@@ -13,10 +13,14 @@ return {
       -- default copilot model is 'claude-opus-4.5'
       model = 'claude-opus-4.5',
       selection = 'visual',
-      -- selection = function(source)
-      --   local select = require 'CopilotChat.select'
-      --   return select.visual(source) or select.buffer(source)
-      -- end,
+      window = {
+        title = 'Clanker Chat',
+      },
+      headers = {
+        user = '👤 You',
+        assistant = '🤖 Clanker',
+        tool = '🔧 Tool',
+      },
     }
     -- CopilotChat keybindings
     vim.keymap.set('n', '<leader>cc', ':CopilotChatToggle<CR>', { desc = 'Toggle CopilotChat', noremap = true, silent = true })
