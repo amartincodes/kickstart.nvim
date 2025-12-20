@@ -379,6 +379,7 @@ require('lazy').setup({
         { '<leader>T', group = '[T]erminal' },
         { '<leader>b', group = '[B]ank (histories)' },
         { '<leader>m', group = '[M]arkdown' },
+        { '<leader>z', group = 'Piega fold[z]' },
       },
     },
   },
