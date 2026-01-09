@@ -76,6 +76,7 @@ return {
           ['<cr>'] = 'open_with_window_picker',
           ['/'] = 'none',
           ['F'] = 'fuzzy_finder',
+          ['v'] = 'open_vsplit',
           ['s'] = function(state)
             local node = state.tree:get_node()
             local path = node:get_id()
