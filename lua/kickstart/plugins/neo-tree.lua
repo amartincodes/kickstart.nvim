@@ -76,6 +76,21 @@ return {
           ['<cr>'] = 'open_with_window_picker',
           ['/'] = 'none',
           ['F'] = 'fuzzy_finder',
+          ['s'] = function(state)
+            local node = state.tree:get_node()
+            local path = node:get_id()
+
+            -- If it's a file, get its parent directory
+            if node.type == 'file' then
+              path = vim.fn.fnamemodify(path, ':h')
+            end
+
+            -- Open telescope live_grep with the selected directory
+            require('telescope.builtin').live_grep {
+              search_dirs = { path },
+              prompt_title = 'Grep in ' .. vim.fn.fnamemodify(path, ':~:.'),
+            }
+          end,
         },
       },
       window_picker = {
