@@ -79,11 +79,26 @@ return {
           ['v'] = 'open_vsplit',
           ['s'] = function(state)
             local node = state.tree:get_node()
+            if not node then
+              vim.notify('No node selected', vim.log.levels.WARN)
+              return
+            end
+
             local path = node:get_id()
+            if not path or path == '' then
+              vim.notify('Invalid path', vim.log.levels.WARN)
+              return
+            end
 
             -- If it's a file, get its parent directory
             if node.type == 'file' then
               path = vim.fn.fnamemodify(path, ':h')
+            end
+
+            -- Validate that path is a directory
+            if vim.fn.isdirectory(path) ~= 1 then
+              vim.notify('Invalid directory: ' .. path, vim.log.levels.WARN)
+              return
             end
 
             -- Open telescope live_grep with the selected directory
