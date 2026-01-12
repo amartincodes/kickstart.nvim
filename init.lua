@@ -466,6 +466,8 @@ require('lazy').setup({
               '--glob',
               '!**/.git/*',
               -- '!.github/',
+              '--glob',
+              '!**/node_modules/*',
             },
           },
           -- live_grep = {
