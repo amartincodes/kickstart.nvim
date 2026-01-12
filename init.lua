@@ -228,6 +228,79 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
+-- GitHub open file keymaps
+local function open_in_github()
+  local filepath = vim.fn.expand '%:p'
+  if filepath == '' then
+    vim.notify('No file in buffer', vim.log.levels.WARN)
+    return
+  end
+
+  -- Get git root directory
+  local git_root = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
+  if vim.v.shell_error ~= 0 or not git_root or git_root == '' then
+    vim.notify('Not in a git repository', vim.log.levels.WARN)
+    return
+  end
+
+  -- Get relative path from git root
+  local relative_path = vim.fn.fnamemodify(filepath, ':~:.')
+  if vim.startswith(filepath, git_root) then
+    relative_path = filepath:sub(#git_root + 2) -- +2 to skip the trailing slash
+  end
+
+  -- Get remote URL
+  local remote_url = vim.fn.systemlist('git config --get remote.origin.url')[1]
+  if vim.v.shell_error ~= 0 or not remote_url or remote_url == '' then
+    vim.notify('No remote origin found', vim.log.levels.WARN)
+    return
+  end
+
+  -- Convert SSH URL to HTTPS if necessary
+  remote_url = remote_url:gsub('git@github%.com:', 'https://github.com/')
+  remote_url = remote_url:gsub('%.git$', '')
+
+  -- Get current branch
+  local current_branch = vim.fn.systemlist('git branch --show-current')[1]
+  if not current_branch or current_branch == '' then
+    vim.notify('Could not determine current branch', vim.log.levels.WARN)
+    return
+  end
+
+  -- Get default branch
+  local default_branch = vim.fn.systemlist('git symbolic-ref refs/remotes/origin/HEAD')[1]
+  if not default_branch or default_branch == '' then
+    vim.notify('Could not determine default branch', vim.log.levels.WARN)
+    return
+  end
+  default_branch = default_branch:gsub('refs/remotes/origin/', '')
+
+  -- Prompt user to choose branch
+  vim.ui.select({ 'Current branch (' .. current_branch .. ')', 'Default branch (' .. default_branch .. ')' }, {
+    prompt = 'Open file in GitHub on:',
+  }, function(choice)
+    if not choice then
+      return
+    end
+
+    local branch = choice:match '%((.-)%)' -- Extract branch name from parentheses
+    if not branch or branch == '' then
+      vim.notify('Could not extract branch name', vim.log.levels.ERROR)
+      return
+    end
+
+    local line_number = vim.fn.line '.'
+    local github_url = string.format('%s/blob/%s/%s#L%d', remote_url, branch, relative_path, line_number)
+
+    -- Open URL in browser
+    local open_cmd = vim.fn.has 'mac' == 1 and 'open' or 'xdg-open'
+    vim.fn.system(string.format('%s "%s"', open_cmd, github_url))
+    vim.notify('Opening in browser: ' .. github_url, vim.log.levels.INFO)
+  end)
+end
+
+vim.keymap.set('n', '<leader>go', open_in_github, { desc = '[G]it [O]pen file in GitHub' })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -290,22 +363,8 @@ require('lazy').setup({
   --        end,
   --    }
   --
-  -- Here is a more advanced example where we pass configuration
-  -- options to `gitsigns.nvim`.
-  --
-  -- See `:help gitsigns` to understand what the configuration keys do
-  { -- Adds git related signs to the gutter, as well as utilities for managing changes
-    'lewis6991/gitsigns.nvim',
-    opts = {
-      signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~' },
-      },
-    },
-  },
+  -- NOTE: Gitsigns configuration is in lua/kickstart/plugins/gitsigns.lua
+  -- to avoid duplication
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
