@@ -500,28 +500,49 @@ require('lazy').setup({
         --  All the info you're looking for is in `:help telescope.setup()`
         --
         defaults = {
-          -- hidden = true,
-          -- file_ignore_patterns = {
-          --   'node_modules',
-          --   'build',
-          --   'dist',
-          --   'yarn.lock',
-          -- },
-          -- },
-          --   mappings = {
-          --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-          --   },
+          -- Performance optimizations
+          path_display = { 'truncate' },
+          sorting_strategy = 'ascending',
+          layout_config = {
+            horizontal = {
+              prompt_position = 'top',
+              preview_width = 0.55,
+            },
+          },
+          file_ignore_patterns = {
+            'node_modules/',
+            '%.git/',
+            'dist/',
+            'build/',
+            '%.lock',
+            '__pycache__/',
+            '%.pyc',
+            'target/',
+            '%.class',
+            '%.o',
+            '%.a',
+            '%.so',
+          },
+          -- Limit results for faster response
+          cache_picker = {
+            num_pickers = 10,
+            limit_entries = 1000,
+          },
+          -- Previewer performance
+          preview = {
+            filesize_limit = 0.5, -- MB - skip preview for files larger than 500KB
+            timeout = 250, -- ms
+          },
         },
         pickers = {
           find_files = {
             theme = 'ivy',
             cwd = vim.fn.getcwd(),
+            -- Use ripgrep with sensible defaults (respects .gitignore)
             find_command = {
               'rg',
               '--files',
               '--hidden',
-              '--no-ignore',
-              '--no-ignore-vcs',
               '--glob',
               '!**/.git/*',
               -- '!.github/',
@@ -529,9 +550,17 @@ require('lazy').setup({
               '!**/node_modules/*',
             },
           },
-          -- live_grep = {
-          --   theme = 'ivy',
-          -- },
+          live_grep = {
+            -- Additional args for better grep performance
+            additional_args = function()
+              return { '--hidden', '--glob', '!**/.git/*' }
+            end,
+          },
+          buffers = {
+            show_all_buffers = true,
+            sort_lastused = true,
+            previewer = false,
+          },
         },
         extensions = {
           ['ui-select'] = {
