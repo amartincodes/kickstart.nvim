@@ -12,6 +12,11 @@ return {
   dependencies = {
     'nvim-lua/plenary.nvim',
   },
+  config = function()
+    vim.g.lazygit_floating_window_winblend = 0
+    vim.g.lazygit_floating_window_scaling_factor = 0.9
+    vim.g.lazygit_floating_window_use_plenary = 0
+  end,
   -- setting the keybinding for LazyGit with 'keys' is recommended in
   -- order to load the plugin when the command is run for the first time
   keys = {
