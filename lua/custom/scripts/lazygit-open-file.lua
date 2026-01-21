@@ -17,7 +17,10 @@ function EditFromLazygit(file_path)
   end
 end
 
--- Add the following to ~/.config/lazygit/config.yml
+-- NOTE: Add this to .zshrc or .bashrc
+-- alias nvim="nvim --listen /tmp/nvim-server-$(tmux display-message -p '#S').pipe"
+
+-- NOTE: Add this to lazygit config file (~/.config/lazygit/config.yml)
 --
 -- gui:
 --   showCommandLog: false
@@ -35,3 +38,6 @@ end
 --   editPreset: 'nvim-remote'
 --   edit: "nvim --server $NVIM --remote-send '<cmd>close<cr><cmd>lua EditFromLazygit({{filename}})<CR>'"
 --   editAtLine: "nvim --server $NVIM --remote-send '<cmd>close<CR><cmd>lua EditLineFromLazygit({{filename}},{{line}})<CR>'"
+
+-- NOTE: We need to return a table to make Lazy happy
+return {}
