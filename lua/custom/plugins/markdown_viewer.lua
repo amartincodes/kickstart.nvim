@@ -7,6 +7,6 @@ return {
   ---@type render.md.UserConfig
   opts = {},
   keys = {
-    { '<leader>mm', ':RenderMarkdown toggle<CR>', desc = 'Toggle [M]arkdown Preview', silent = true },
+    { '<leader>Mm', ':RenderMarkdown toggle<CR>', desc = 'Toggle [M]arkdown Preview', silent = true },
   },
 }
