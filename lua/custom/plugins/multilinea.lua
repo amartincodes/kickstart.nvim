@@ -1,5 +1,5 @@
 return {
-  dir = '/home/cubanmercury/Documents/projects/multilinea', -- Local development path
+  'amartincodes/multilinea',
   event = 'BufReadPost',
   opts = {},
   config = function(_, opts)
