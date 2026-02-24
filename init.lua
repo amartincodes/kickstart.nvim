@@ -939,6 +939,7 @@ require('lazy').setup({
         -- scss = { 'prettierd', 'prettier', stop_after_first = true },
         markdown = { 'prettierd', 'prettier', stop_after_first = true },
         rust = { 'rustfmt', lsp_format = 'fallback' },
+        c = { 'clang-format', lsp_format = 'fallback' },
         -- python = { 'isort', 'black' },
         -- go = { 'gofumpt', lsp_format = 'fallback'
       },
