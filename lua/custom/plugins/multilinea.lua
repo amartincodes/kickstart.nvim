@@ -1,6 +1,5 @@
 return {
-  -- 'amartincodes/multilinea',
-  dir = '~/Documents/projects/multilinea',
+  'amartincodes/multilinea',
   event = 'BufReadPost',
   opts = {},
   config = function(_, opts)
