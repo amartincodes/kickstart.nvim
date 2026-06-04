@@ -650,6 +650,15 @@ require('lazy').setup({
       'saghen/blink.cmp',
     },
     config = function()
+      -- Consistent, high-contrast borders for LSP popups
+      local lsp_float_opts = {
+        border = 'rounded',
+        max_width = math.floor(vim.o.columns * 0.7),
+        focusable = true,
+      }
+
+      vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, lsp_float_opts)
+      vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, lsp_float_opts)
       -- Brief aside: **What is LSP?**
       --
       -- LSP is an initialism you've probably heard, but might not understand what it is.
@@ -787,7 +796,13 @@ require('lazy').setup({
       -- See :help vim.diagnostic.Opts
       vim.diagnostic.config {
         severity_sort = true,
-        float = { border = 'rounded', source = 'if_many', wrap = true, max_width = math.floor(vim.o.columns * 0.8) },
+        float = {
+          border = 'rounded',
+          source = 'if_many',
+          wrap = true,
+          focusable = true,
+          max_width = math.floor(vim.o.columns * 0.8),
+        },
         underline = { severity = vim.diagnostic.severity.ERROR },
         signs = vim.g.have_nerd_font and {
           text = {
@@ -840,6 +855,15 @@ require('lazy').setup({
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         ts_ls = {},
         --
+        -- Odin lsp - https://github.com/DanielGavin/ols
+        -- ols = {
+        --   mason = false,
+        --   cmd = { '~/Documents/projects/odin/ols/ols' },
+        --   settings = {
+        --     odin_command = '~/Documents/projects/odin/ols/ols',
+        --   },
+        -- },
+        ols = {},
 
         lua_ls = {
           -- cmd = { ... },
@@ -1004,7 +1028,7 @@ require('lazy').setup({
         -- <c-k>: Toggle signature help
         --
         -- See :h blink-cmp-config-keymap for defining your own keymap
-        preset = 'default',
+        preset = 'super-tab',
 
         -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
         --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
@@ -1064,6 +1088,35 @@ require('lazy').setup({
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-night', 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
       vim.cmd.colorscheme 'tokyonight-moon'
+      -- for tokyonight-moon scheme
+      -- -- High-contrast popovers and menus
+      -- vim.api.nvim_set_hl(0, 'NormalFloat', { bg = '#1b1f2a' })
+      -- vim.api.nvim_set_hl(0, 'FloatBorder', { fg = '#7aa2f7', bg = '#1b1f2a' })
+      -- vim.api.nvim_set_hl(0, 'FloatTitle', { fg = '#c0caf5', bg = '#1b1f2a', bold = true })
+      -- -- Completion/popup menu contrast
+      -- vim.api.nvim_set_hl(0, 'Pmenu', { fg = '#c0caf5', bg = '#1b1f2a' })
+      -- vim.api.nvim_set_hl(0, 'PmenuSel', { fg = '#1b1f2a', bg = '#7aa2f7', bold = true })
+      -- vim.api.nvim_set_hl(0, 'PmenuSbar', { bg = '#24283b' })
+      -- vim.api.nvim_set_hl(0, 'PmenuThumb', { bg = '#7aa2f7' })
+      -- -- Keep floating windows opaque for readability
+      -- vim.api.nvim_set_hl(0, 'NormalFloat', { bg = '#1b1f2a', blend = 0 })
+      -- vim.api.nvim_set_hl(0, 'FloatBorder', { fg = '#7aa2f7', bg = '#1b1f2a', blend = 0 })
+
+      -- for cyberdream scheme
+      -- Cyberdream-tuned high-contrast popovers and menus
+      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = '#11141a', blend = 0 })
+      vim.api.nvim_set_hl(0, 'FloatBorder', { fg = '#7ab8ff', bg = '#11141a', blend = 0 })
+      vim.api.nvim_set_hl(0, 'FloatTitle', { fg = '#c7d5ff', bg = '#11141a', bold = true })
+      -- Completion/popup menu contrast
+      vim.api.nvim_set_hl(0, 'Pmenu', { fg = '#d7e0ff', bg = '#11141a' })
+      vim.api.nvim_set_hl(0, 'PmenuSel', { fg = '#0b0f14', bg = '#5ea1ff', bold = true })
+      vim.api.nvim_set_hl(0, 'PmenuSbar', { bg = '#1a2130' })
+      vim.api.nvim_set_hl(0, 'PmenuThumb', { bg = '#5ea1ff' })
+      -- Optional extra contrast for docs/signature windows used by completion
+      vim.api.nvim_set_hl(0, 'BlinkCmpDoc', { fg = '#d7e0ff', bg = '#11141a' })
+      vim.api.nvim_set_hl(0, 'BlinkCmpDocBorder', { fg = '#5ea1ff', bg = '#11141a' })
+      vim.api.nvim_set_hl(0, 'BlinkCmpSignatureHelp', { fg = '#d7e0ff', bg = '#11141a' })
+      vim.api.nvim_set_hl(0, 'BlinkCmpSignatureHelpBorder', { fg = '#5ea1ff', bg = '#11141a' })
     end,
   },
 
@@ -1123,6 +1176,7 @@ require('lazy').setup({
         'luadoc',
         'markdown',
         'markdown_inline',
+        'odin',
         'query',
         'typescript',
         'vim',
