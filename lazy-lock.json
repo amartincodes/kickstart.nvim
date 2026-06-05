@@ -24,7 +24,6 @@
   "nvim-treesitter": { "branch": "main", "commit": "4916d6592ede8c07973490d9322f187e07dfefac" },
   "nvim-web-devicons": { "branch": "master", "commit": "dfbfaa967a6f7ec50789bead7ef87e336c1fa63c" },
   "nvim-window-picker": { "branch": "main", "commit": "6382540b2ae5de6c793d4aa2e3fe6dbb518505ec" },
-  "odin.nvim": { "branch": "main", "commit": "f9e6a065eeba81c8a5fbb921c305f4be8f931183" },
   "piega": { "branch": "master", "commit": "6f618216a2ec8d62c606ef1a4311ee753a4c548d" },
   "plenary.nvim": { "branch": "master", "commit": "74b06c6c75e4eeb3108ec01852001636d85a932b" },
   "render-markdown.nvim": { "branch": "main", "commit": "5adf0895310c1904e5abfaad40a2baad7fe44a07" },
