@@ -657,8 +657,6 @@ require('lazy').setup({
         focusable = true,
       }
 
-      vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, lsp_float_opts)
-      vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, lsp_float_opts)
       -- Brief aside: **What is LSP?**
       --
       -- LSP is an initialism you've probably heard, but might not understand what it is.
@@ -700,6 +698,14 @@ require('lazy').setup({
             mode = mode or 'n'
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
+
+          map('K', function()
+            vim.lsp.buf.hover(lsp_float_opts)
+          end, 'Hover Documentation')
+
+          map('<C-k>', function()
+            vim.lsp.buf.signature_help(lsp_float_opts)
+          end, 'Signature Help')
 
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
@@ -1172,12 +1178,14 @@ require('lazy').setup({
         'c',
         'diff',
         'html',
+        'javascript',
         'lua',
         'luadoc',
         'markdown',
         'markdown_inline',
         'odin',
         'query',
+        'tsx',
         'typescript',
         'vim',
         'vimdoc',
@@ -1204,8 +1212,13 @@ require('lazy').setup({
             return
           end
 
-          local started = pcall(vim.treesitter.start, buf)
-          if started and vim.bo[buf].filetype ~= 'ruby' then
+          local started, err = pcall(vim.treesitter.start, buf)
+          if not started then
+            vim.notify_once(('treesitter failed for %s: %s'):format(vim.bo[buf].filetype, err), vim.log.levels.WARN)
+            return
+          end
+
+          if vim.bo[buf].filetype ~= 'ruby' then
             vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
           end
         end,
