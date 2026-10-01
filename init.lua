@@ -430,7 +430,6 @@ require('lazy').setup({
         { '<leader>t', group = '[T]oggle' },
         { '<leader>g', group = '[G]it Hunk', mode = { 'n', 'v' } },
         { '<leader>h', group = '[H]arpoon' },
-        { '<leader>c', group = '[C]opilot' },
         { '<leader>e', group = 'File [E]xplorer' },
         { '<leader>l', group = '[L]azy Git' },
         { '<leader>q', group = 'Open diagnostics [Q]uickfix' },

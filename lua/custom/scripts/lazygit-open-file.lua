@@ -2,7 +2,6 @@ local special_filetypes = {
   'neo-tree',
   'neo-tree-popup',
   'notify',
-  'copilot-chat',
   'TelescopePrompt',
   'snacks_picker_input',
   'snacks_picker_list',
